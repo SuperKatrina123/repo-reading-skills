@@ -1,23 +1,23 @@
 # Repo Reading Skills
 
-A collection of GitHub Copilot skills for systematically understanding unfamiliar repositories.
+一套用于系统性读懂陌生代码仓库的 AI 编码助手 Skill 集合。
 
-Instead of one generic "summarize this repo" prompt, this system routes each request into a focused mode and produces reusable, structured outputs.
+不同于一句「帮我总结这个仓库」，这套系统会将请求路由到最合适的 sub-skill，输出可复用的结构化产物。
 
-## Skills
+## 技能结构
 
-[`repo-reading-system`](./repo-reading-system/) is the main entry skill. It detects intent and routes to the right sub-skill(s). Sub-skills live inside it:
+[`repo-reading-system`](./repo-reading-system/) 是主入口 skill，负责理解意图并路由到对应 sub-skill。Sub-skills 都在其目录下：
 
-| Sub-skill | Purpose |
-|---|---|
-| [`repo-onboarding`](./repo-reading-system/repo-onboarding/) | First pass on an unfamiliar repo: overview, reading path, glossary |
-| [`architecture-trace`](./repo-reading-system/architecture-trace/) | Runtime understanding: entrypoints, module flow, data flow, state changes |
-| [`change-entry-finder`](./repo-reading-system/change-entry-finder/) | Locate where to change code, blast radius, test surface, and risks |
-| [`repo-knowledge-extractor`](./repo-reading-system/repo-knowledge-extractor/) | Extract durable team docs: conventions, terms, hidden rules, pitfalls |
+| Sub-skill | 触发场景 | 关键词 |
+|---|---|---|
+| [`repo-onboarding`](./repo-reading-system/repo-onboarding/) | 第一次接触陌生仓库、新人交接 | 这个项目是做什么的、从哪里开始读、帮我快速上手、生成 repo brief |
+| [`architecture-trace`](./repo-reading-system/architecture-trace/) | 已有基本了解，需要运行时视角 | 请求/事件怎么流转、模块怎么协作、数据怎么流动、系统边界在哪 |
+| [`change-entry-finder`](./repo-reading-system/change-entry-finder/) | 改动目标已知，需要找入口和影响面 | 我要改 X 功能从哪里改、改动影响哪些模块、测试要覆盖哪里、风险点在哪 |
+| [`repo-knowledge-extractor`](./repo-reading-system/repo-knowledge-extractor/) | 需要沉淀可复用的团队文档 | 提取业务规则、整理技术约定、记录隐性知识、生成避坑指南 |
 
-## Quick Start
+## 快速开始
 
-In most cases, trigger the entry skill and let it route automatically:
+大多数情况下直接触发主 skill，让它自动路由：
 
 ```text
 Use repo-reading-system to help me take over this repository quickly.
@@ -35,9 +35,9 @@ Use repo-reading-system to find where I should modify code to add one API field.
 Use repo-reading-system to turn this legacy project into a reusable team brief.
 ```
 
-## Default Outputs
+## 默认输出目录
 
-All skills write under `docs/repo-brief/` by default. Typical artifacts:
+所有 skill 默认输出到 `docs/repo-brief/`，典型产物：
 
 ```
 docs/repo-brief/
@@ -57,52 +57,49 @@ docs/repo-brief/
         └── test-surface.md
 ```
 
-## Routing Logic
+## 路由逻辑
 
 ```
 repo-reading-system
-├── unfamiliar repo?           → repo-onboarding
-├── need runtime understanding? → architecture-trace
-├── change is already known?   → change-entry-finder
-└── want durable team docs?    → repo-knowledge-extractor
+├── 不熟悉这个仓库？           → repo-onboarding
+├── 需要了解运行时结构？        → architecture-trace
+├── 改动目标已明确？           → change-entry-finder
+└── 需要沉淀团队文档？         → repo-knowledge-extractor
 ```
 
-Use the smallest chain that answers the current question. Skip steps that add no value.
+只加载能回答当前问题的最小 skill 组合，不需要的步骤可跳过。
 
-## Installation
+## 安装使用
 
-These skills are plain markdown files and work with any AI coding assistant that supports custom instructions or skill loading.
+这些 skill 是纯 Markdown 文件，适用于任何支持自定义指令的 AI 编码助手。
 
 ### GitHub Copilot
 
-Copy the skill folders into your project and reference them in `.github/copilot-instructions.md`:
+将 skill 文件夹复制到项目中，在 `.github/copilot-instructions.md` 中引用：
 
 ```md
 Use the skills in `.github/skills/repo-reading-system/` for all repo reading tasks.
 ```
 
-Or add them to your Copilot workspace `.yml` config under `skills:`.
-
 ### Claude Code
 
-Copy the skill folders into your project, then add a reference in `CLAUDE.md`:
+将 skill 文件夹复制到项目中，在 `CLAUDE.md` 中引用：
 
 ```md
 ## Skills
-For repo reading and understanding tasks, load the skill from `skills/repo-reading-system/SKILL.md`.
+For repo reading tasks, load the skill from `skills/repo-reading-system/SKILL.md`.
 ```
-
-Or paste the `SKILL.md` content directly into `CLAUDE.md` if you only need one skill.
 
 ### Codex (OpenAI)
 
-Copy the skill folders into your project, then reference them in `AGENTS.md`:
+将 skill 文件夹复制到项目中，在 `AGENTS.md` 中引用：
 
 ```md
 ## Skills
 For repo reading tasks, follow the instructions in `skills/repo-reading-system/SKILL.md`.
 ```
 
-### General
+### 通用方式
 
-Any tool that accepts a system prompt or custom instructions file can use these skills — just paste the contents of `SKILL.md` into your instruction file.
+任何支持 system prompt 或自定义指令的工具，直接将 `SKILL.md` 的内容粘贴进去即可。
+
