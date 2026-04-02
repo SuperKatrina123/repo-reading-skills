@@ -70,4 +70,38 @@ Use the smallest chain that answers the current question. Skip steps that add no
 
 ## Installation
 
-Copy any skill folder into your project's `.github/copilot/skills/` directory, or reference it directly in your Copilot workspace configuration.
+These skills are plain markdown files and work with any AI coding assistant that supports custom instructions or skill loading.
+
+### GitHub Copilot
+
+Copy the skill folders into your project and reference them in `.github/copilot-instructions.md`:
+
+```md
+Use the skills in `.github/skills/repo-reading-system/` for all repo reading tasks.
+```
+
+Or add them to your Copilot workspace `.yml` config under `skills:`.
+
+### Claude Code
+
+Copy the skill folders into your project, then add a reference in `CLAUDE.md`:
+
+```md
+## Skills
+For repo reading and understanding tasks, load the skill from `skills/repo-reading-system/SKILL.md`.
+```
+
+Or paste the `SKILL.md` content directly into `CLAUDE.md` if you only need one skill.
+
+### Codex (OpenAI)
+
+Copy the skill folders into your project, then reference them in `AGENTS.md`:
+
+```md
+## Skills
+For repo reading tasks, follow the instructions in `skills/repo-reading-system/SKILL.md`.
+```
+
+### General
+
+Any tool that accepts a system prompt or custom instructions file can use these skills — just paste the contents of `SKILL.md` into your instruction file.
