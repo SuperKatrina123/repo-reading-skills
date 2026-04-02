@@ -6,13 +6,14 @@ Instead of one generic "summarize this repo" prompt, this system routes each req
 
 ## Skills
 
-| Skill | Purpose |
+[`repo-reading-system`](./repo-reading-system/) is the main entry skill. It detects intent and routes to the right sub-skill(s). Sub-skills live inside it:
+
+| Sub-skill | Purpose |
 |---|---|
-| [`repo-reading-system`](./repo-reading-system/) | Entry skill — detects intent and routes to the right sub-skill(s) |
-| [`repo-onboarding`](./repo-onboarding/) | First pass on an unfamiliar repo: overview, reading path, glossary |
-| [`architecture-trace`](./architecture-trace/) | Runtime understanding: entrypoints, module flow, data flow, state changes |
-| [`change-entry-finder`](./change-entry-finder/) | Locate where to change code, blast radius, test surface, and risks |
-| [`repo-knowledge-extractor`](./repo-knowledge-extractor/) | Extract durable team docs: conventions, terms, hidden rules, pitfalls |
+| [`repo-onboarding`](./repo-reading-system/repo-onboarding/) | First pass on an unfamiliar repo: overview, reading path, glossary |
+| [`architecture-trace`](./repo-reading-system/architecture-trace/) | Runtime understanding: entrypoints, module flow, data flow, state changes |
+| [`change-entry-finder`](./repo-reading-system/change-entry-finder/) | Locate where to change code, blast radius, test surface, and risks |
+| [`repo-knowledge-extractor`](./repo-reading-system/repo-knowledge-extractor/) | Extract durable team docs: conventions, terms, hidden rules, pitfalls |
 
 ## Quick Start
 
